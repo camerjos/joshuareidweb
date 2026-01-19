@@ -24,7 +24,7 @@
 
     td {
       border: none; /* no cell borders */
-      vertical-align: middle;
+      vertical-align: top; /* allow top alignment */
     }
 
     /* LEFT column: image */
@@ -47,6 +47,7 @@
       width: 30%;
       padding-left: 20px;
       padding-right: 20px;
+      vertical-align: top;
     }
 
     /* Logo sits at the top of the nav column, aligned right */
@@ -55,7 +56,8 @@
       max-width: 100%;
       height: auto;
       display: block;
-      margin-left: auto; /* right align logo */
+      margin-left: auto; /* right align */
+      margin-top: 0; /* top align */
       margin-right: 0;
       margin-bottom: 20px;
     }
