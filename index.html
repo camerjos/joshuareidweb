@@ -14,60 +14,57 @@
       font-family: Arial, Helvetica, sans-serif;
     }
 
-    /* Layout table */
+    /* Layout table (no borders) */
     table {
       width: 100vw;
       height: 100vh;
       border-collapse: collapse;
-      border: none; /* no outer border */
+      border: none;
     }
 
     td {
-      border: none; /* no cell borders */
-      vertical-align: top; /* allow top alignment */
+      border: none;
+      vertical-align: top;
     }
 
     /* LEFT column: image */
     .image-cell {
       width: 70%;
-      padding-left: 20px;
-      padding-right: 20px;
+      padding: 20px;
     }
 
     .image-cell img.main-image {
       width: 50%;
       height: auto;
       display: block;
-      margin-left: auto; /* align image to the right */
+      margin-left: auto; /* align image to the right within left column */
       margin-right: 0;
     }
 
     /* RIGHT column: navigation */
     .nav-cell {
       width: 30%;
-      padding-left: 20px;
-      padding-right: 20px;
-      vertical-align: top;
+      padding: 20px;
     }
 
-    /* Logo sits at the top of the nav column, aligned right */
+    /* Logo: top-left (only logo left-aligned) */
     .logo {
-      width: 480px;
+      width: 1100px; /* doubled */
       max-width: 100%;
       height: auto;
       display: block;
-      margin-left: auto; /* right align */
-      margin-top: 0; /* top align */
-      margin-right: 0;
+      margin-left: 0; /* left align */
+      margin-right: auto;
+      margin-top: 0;
       margin-bottom: 20px;
     }
 
-    /* Links are left-aligned */
+    /* Links: left aligned */
     nav {
       display: flex;
       flex-direction: column;
       gap: 25px;
-      align-items: flex-start; /* left-align links */
+      align-items: flex-start;
     }
 
     nav a {
@@ -77,34 +74,39 @@
       letter-spacing: 2px;
     }
 
-    nav a:hover {
-      opacity: 0.7;
-    }
+    nav a:hover { opacity: 0.7; }
 
     .hidden { display: none; }
 
+    /* Biography text */
     .bio {
       margin-top: 12px;
-      font-size: 1.05rem;
-      line-height: 1.4;
+      font-size: 1.15rem; /* slightly bigger */
+      line-height: 1.45;
       max-width: 420px;
       color: #ddd;
     }
 
-    /* Mobile vs desktop styling (keeps side-by-side) */
+    /* Mobile: keep side-by-side, enlarge photo, show bio under photo */
     @media (max-width: 900px) {
       nav a { font-size: 1.4rem; }
-      .bio { font-size: 0.98rem; }
-      .logo { width: 400px; }
+      .logo { width: 950px; }
 
-      /* Mobile: make the main image bigger (double) */
+      /* Mobile: make main image bigger */
       .image-cell img.main-image {
         width: 100%;
       }
-    }
-      .bio { font-size: 0.98rem; }
-      .logo { width: 400px; }
-    }
+
+      /* Mobile: slightly smaller bio */
+      .bio {
+        font-size: 0.88rem;
+        max-width: none;
+      }
+
+      /* Mobile: do NOT show bio under the link */
+      #bio-content {
+        display: none !important;
+      }
     }
   </style>
 </head>
@@ -114,6 +116,7 @@
       <!-- Image on the LEFT -->
       <td class="image-cell">
         <img src="index.jpg" alt="DJ Joshua Reid" class="main-image" />
+        <div id="bio-under-photo" class="bio hidden"></div>
       </td>
 
       <!-- Links on the RIGHT -->
@@ -133,13 +136,45 @@
   </table>
 
   <script>
-    // Biography toggle
+    // Biography toggle (desktop: show under link, mobile: show under photo)
     const bioLink = document.getElementById('bio-link');
     const bioContent = document.getElementById('bio-content');
+    const bioUnderPhoto = document.getElementById('bio-under-photo');
 
-    bioLink.addEventListener('click', function (e) {
+    function isMobileView() {
+      return window.matchMedia('(max-width: 900px)').matches;
+    }
+
+    function getBioText() {
+      return (bioContent?.textContent || '').trim();
+    }
+
+    function syncBioUnderPhoto() {
+      if (!bioUnderPhoto) return;
+      bioUnderPhoto.textContent = getBioText();
+    }
+
+    // Initialize under-photo bio text
+    syncBioUnderPhoto();
+
+    bioLink.addEventListener('click', (e) => {
       e.preventDefault();
-      bioContent.classList.toggle('hidden');
+
+      if (isMobileView()) {
+        syncBioUnderPhoto();
+        bioUnderPhoto.classList.toggle('hidden');
+      } else {
+        bioContent.classList.toggle('hidden');
+      }
+    });
+
+    // Keep behavior sane on resize / rotation
+    window.addEventListener('resize', () => {
+      if (isMobileView()) {
+        bioContent.classList.add('hidden');
+      } else {
+        bioUnderPhoto.classList.add('hidden');
+      }
     });
   </script>
 </body>
