@@ -14,20 +14,14 @@
       font-family: Arial, Helvetica, sans-serif;
     }
 
-    /* Layout table (no borders) */
     table {
       width: 100vw;
       height: 100vh;
       border-collapse: collapse;
-      border: none;
     }
 
-    td {
-      border: none;
-      vertical-align: top;
-    }
+    td { vertical-align: top; }
 
-    /* LEFT column: image */
     .image-cell {
       width: 70%;
       padding: 20px;
@@ -37,33 +31,26 @@
       width: 50%;
       height: auto;
       display: block;
-      margin-left: auto; /* align image to the right within left column */
-      margin-right: 0;
+      margin-left: auto;
     }
 
-    /* RIGHT column: navigation */
     .nav-cell {
       width: 30%;
       padding: 20px;
     }
 
-    /* Logo: top-left (only logo left-aligned) */
     .logo {
-      width: 1100px; /* doubled */
+      width: 1100px;
       max-width: 100%;
       height: auto;
       display: block;
-      margin-left: 0; /* left align */
-      margin-right: auto;
-      margin-top: 0;
       margin-bottom: 20px;
     }
 
-    /* Links: left aligned */
     nav {
       display: flex;
       flex-direction: column;
-      gap: 25px;
+      gap: 20px;
       align-items: flex-start;
     }
 
@@ -72,63 +59,96 @@
       text-decoration: none;
       font-size: 2rem;
       letter-spacing: 2px;
+      cursor: pointer;
     }
 
     nav a:hover { opacity: 0.7; }
 
     .hidden { display: none; }
 
-    /* Biography text */
-    .bio {
+    .bio, .gallery {
       margin-top: 12px;
-      font-size: 1.15rem; /* slightly bigger */
+      font-size: 1.15rem;
       line-height: 1.45;
       max-width: 420px;
       color: #ddd;
     }
 
-    /* Mobile: keep side-by-side, enlarge photo, show bio under photo */
-    @media (max-width: 900px) {
-      nav a { font-size: 1.4rem; }
-     .logo { width: 100%; }
+    /* Thumbnail gallery */
+    .thumb-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 10px;
+    }
 
-      /* Mobile: make main image bigger */
+    .thumb-grid img {
+      width: 100%;
+      cursor: pointer;
+      border: 2px solid #222;
+    }
+
+    /* Lightbox */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+    }
+
+    .lightbox img {
+      max-width: 90%;
+      max-height: 90%;
+    }
+
+    @media (max-width: 900px) {
+      nav a { font-size: 1.15rem; }
+      .logo { width: 100%; }
+
       .image-cell img.main-image {
         width: 100%;
       }
 
-      /* Mobile: slightly smaller bio */
-      .bio {
-        font-size: 0.88rem;
-        max-width: none;
-      }
+      .bio { font-size: 0.88rem; max-width: none; }
 
-      /* Mobile: do NOT show bio under the link */
-      #bio-content {
-        display: none !important;
-      }
+      #bio-content { display: none !important; }
+      #gallery-content { display: none !important; }
     }
   </style>
 </head>
 <body>
   <table>
     <tr>
-      <!-- Image on the LEFT -->
       <td class="image-cell">
         <img src="index.jpg" alt="DJ Joshua Reid" class="main-image" />
         <div id="bio-under-photo" class="bio hidden"></div>
+        <div id="gallery-under-photo" class="gallery hidden"></div>
       </td>
 
-      <!-- Links on the RIGHT -->
       <td class="nav-cell">
         <img src="newlogo.png" alt="Logo" class="logo" />
         <nav>
-          <a href="#bio" id="bio-link">Biography</a>
+          <a id="bio-link">Biography</a>
           <div id="bio-content" class="bio hidden">
             DJ Joshua Reid is a seasoned force behind the decks, with roots that trace back to high school and a career spanning more than 20 years. Known for high-energy sets and a deep love of disco-infused house, he has shared stages with international heavyweights such as The Cube Guys, Hector Fonseca, and Morabito, while performing at iconic events including Toronto Pride and Halifax Pride. After a recent relocation from Toronto to Halifax, Joshua Reid has quickly made his mark on the East Coast, becoming a defining sound of the local bear scene. He now regularly commands the dance floor at the Bear Ball, bringing fun, flair, and undeniable groove to every set he plays.
           </div>
 
-          <a href="https://hearthis.at/joshuareid" target="_blank" rel="noopener noreferrer">DJ Mixes</a>
+          <a id="gallery-link">Upcoming and Past Events</a>
+          <div id="gallery-content" class="gallery hidden">
+            <div class="thumb-grid">
+              <img src="thumb1.jpg" data-full="full1.jpg" />
+              <img src="thumb2.jpg" data-full="full2.jpg" />
+              <img src="thumb3.jpg" data-full="full3.jpg" />
+              <img src="thumb4.jpg" data-full="full4.jpg" />
+              <img src="thumb5.jpg" data-full="full5.jpg" />
+              <img src="thumb6.jpg" data-full="full6.jpg" />
+            </div>
+          </div>
+
+          <a href="https://hearthis.at/joshuareid" target="_blank">DJ Mixes</a>
           <a href="mailto:joshuarcameron@gmail.com">Contact</a>
         </nav>
       </td>
@@ -136,46 +156,58 @@
   </table>
 
   <script>
-    // Biography toggle (desktop: show under link, mobile: show under photo)
     const bioLink = document.getElementById('bio-link');
     const bioContent = document.getElementById('bio-content');
     const bioUnderPhoto = document.getElementById('bio-under-photo');
 
-    function isMobileView() {
+    const galleryLink = document.getElementById('gallery-link');
+    const galleryContent = document.getElementById('gallery-content');
+    const galleryUnderPhoto = document.getElementById('gallery-under-photo');
+
+    function isMobile() {
       return window.matchMedia('(max-width: 900px)').matches;
     }
 
-    function getBioText() {
-      return (bioContent?.textContent || '').trim();
+    function syncContent(source, target) {
+      if (!source || !target) return;
+      target.innerHTML = source.innerHTML;
+      attachLightbox(target);
     }
 
-    function syncBioUnderPhoto() {
-      if (!bioUnderPhoto) return;
-      bioUnderPhoto.textContent = getBioText();
+    function attachLightbox(container) {
+      const images = container.querySelectorAll('img[data-full]');
+      images.forEach(img => {
+        img.onclick = () => openLightbox(img.dataset.full);
+      });
     }
 
-    // Initialize under-photo bio text
-    syncBioUnderPhoto();
+    function openLightbox(src) {
+      const lightbox = document.createElement('div');
+      lightbox.className = 'lightbox';
+      lightbox.innerHTML = `<img src="${src}">`;
+      lightbox.onclick = () => lightbox.remove();
+      document.body.appendChild(lightbox);
+    }
 
-    bioLink.addEventListener('click', (e) => {
-      e.preventDefault();
+    attachLightbox(galleryContent);
 
-      if (isMobileView()) {
-        syncBioUnderPhoto();
+    bioLink.onclick = () => {
+      if (isMobile()) {
+        syncContent(bioContent, bioUnderPhoto);
         bioUnderPhoto.classList.toggle('hidden');
       } else {
         bioContent.classList.toggle('hidden');
       }
-    });
+    };
 
-    // Keep behavior sane on resize / rotation
-    window.addEventListener('resize', () => {
-      if (isMobileView()) {
-        bioContent.classList.add('hidden');
+    galleryLink.onclick = () => {
+      if (isMobile()) {
+        syncContent(galleryContent, galleryUnderPhoto);
+        galleryUnderPhoto.classList.toggle('hidden');
       } else {
-        bioUnderPhoto.classList.add('hidden');
+        galleryContent.classList.toggle('hidden');
       }
-    });
+    };
   </script>
 </body>
 </html>
