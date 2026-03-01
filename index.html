@@ -1,213 +1,254 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DJ Joshua Reid</title>
-  <style>
-    * { box-sizing: border-box; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DJ Joshua Reid</title>
 
-    body {
-      margin: 0;
-      background: #000;
-      color: #fff;
-      font-family: Arial, Helvetica, sans-serif;
-    }
+<style>
+* { box-sizing: border-box; }
 
-    table {
-      width: 100vw;
-      height: 100vh;
-      border-collapse: collapse;
-    }
+body {
+  margin: 0;
+  background: #000;
+  color: #fff;
+  font-family: Arial, Helvetica, sans-serif;
+}
 
-    td { vertical-align: top; }
+.hidden { display: none; }
 
-    .image-cell {
-      width: 70%;
-      padding: 20px;
-    }
+/* ================= DESKTOP LAYOUT ================= */
+table {
+  width: 100vw;
+  height: 100vh;
+  border-collapse: collapse;
+}
 
-    .image-cell img.main-image {
-      width: 50%;
-      height: auto;
-      display: block;
-      margin-left: auto;
-    }
+td { vertical-align: top; }
 
-    .nav-cell {
-      width: 30%;
-      padding: 20px;
-    }
+.image-cell {
+  width: 70%;
+  padding: 20px;
+}
 
-    .logo {
-      width: 1100px;
-      max-width: 100%;
-      height: auto;
-      display: block;
-      margin-bottom: 20px;
-    }
+.image-cell img.main-image {
+  width: 50%;
+  display: block;
+  margin-left: auto;
+}
 
-    nav {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      align-items: flex-start;
-    }
+.nav-cell {
+  width: 30%;
+  padding: 20px;
+}
 
-    nav a {
-      color: #fff;
-      text-decoration: none;
-      font-size: 2rem;
-      letter-spacing: 2px;
-      cursor: pointer;
-    }
+.logo {
+  width: 1100px;
+  max-width: 100%;
+  display: block;
+  margin-bottom: 20px;
+}
 
-    nav a:hover { opacity: 0.7; }
+nav {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
 
-    .hidden { display: none; }
+nav a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 2rem;
+  letter-spacing: 2px;
+  cursor: pointer;
+}
 
-    .bio, .gallery {
-      margin-top: 12px;
-      font-size: 1.15rem;
-      line-height: 1.45;
-      max-width: 420px;
-      color: #ddd;
-    }
+nav a:hover { opacity: 0.7; }
 
-    /* Thumbnail gallery */
-    .thumb-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-top: 10px;
-    }
+.section {
+  margin-top: 12px;
+  max-width: 420px;
+}
 
-    .thumb-grid img {
-      width: 100%;
-      cursor: pointer;
-      border: 2px solid #222;
-    }
+/* Thumbnail grid */
+.thumb-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 15px;
+}
 
-    /* Lightbox */
-    .lightbox {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.9);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 999;
-    }
+.thumb-grid img {
+  width: 100%;
+  cursor: pointer;
+  border: 2px solid #222;
+}
 
-    .lightbox img {
-      max-width: 90%;
-      max-height: 90%;
-    }
+/* Lightbox */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
 
-    @media (max-width: 900px) {
-      nav a { font-size: 1.15rem; }
-      .logo { width: 100%; }
+.lightbox img {
+  max-width: 90%;
+  max-height: 90%;
+}
 
-      .image-cell img.main-image {
-        width: 100%;
-      }
+/* ================= MOBILE LAYOUT ================= */
+@media (max-width: 900px) {
 
-      .bio { font-size: 0.88rem; max-width: none; }
+  table {
+    display: block;
+    height: auto;
+  }
 
-      #bio-content { display: none !important; }
-      #gallery-content { display: none !important; }
-    }
-  </style>
+  tr { display: block; }
+
+  td {
+    display: block;
+    width: 100%;
+  }
+
+  /* Index image on its own, aligned right */
+  .image-cell {
+    width: 100%;
+    padding: 20px;
+  }
+
+  .image-cell img.main-image {
+    width: 100%;
+    display: block;
+    margin-left: auto;
+  }
+
+  /* Logo and navigation underneath */
+  .nav-cell {
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+  }
+
+  /* Reduce logo size by 50% and center */
+  .logo {
+    width: 50%;
+    max-width: 400px;
+    display: block;
+    margin: 0 auto 20px auto;
+  }
+
+  /* Center links underneath logo */
+  nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+
+  nav a {
+    font-size: 1.2rem;
+    text-align: center;
+  }
+
+  /* Biography text half size on mobile */
+  #bio {
+    font-size: 0.5em;
+  }
+
+  .section {
+    max-width: none;
+  }
+}
+</style>
 </head>
+
 <body>
-  <table>
-    <tr>
-      <td class="image-cell">
-        <img src="index.jpg" alt="DJ Joshua Reid" class="main-image" />
-        <div id="bio-under-photo" class="bio hidden"></div>
-        <div id="gallery-under-photo" class="gallery hidden"></div>
-      </td>
 
-      <td class="nav-cell">
-        <img src="newlogo.png" alt="Logo" class="logo" />
-        <nav>
-          <a id="bio-link">Biography</a>
-          <div id="bio-content" class="bio hidden">
-            DJ Joshua Reid is a seasoned force behind the decks, with roots that trace back to high school and a career spanning more than 20 years. Known for high-energy sets and a deep love of disco-infused house, he has shared stages with international heavyweights such as The Cube Guys, Hector Fonseca, and Morabito, while performing at iconic events including Toronto Pride and Halifax Pride. After a recent relocation from Toronto to Halifax, Joshua Reid has quickly made his mark on the East Coast, becoming a defining sound of the local bear scene. He now regularly commands the dance floor at the Bear Ball, bringing fun, flair, and undeniable groove to every set he plays.
-          </div>
+<table>
+<tr>
 
-          <a id="gallery-link">Upcomingand Past Events</a>
-          <div id="gallery-content" class="gallery hidden">
-            <div class="thumb-grid">
-              <img src="thumb1.jpg" data-full="full1.jpg" />
-              <img src="thumb2.jpg" data-full="full2.jpg" />
-              <img src="thumb3.jpg" data-full="full3.jpg" />
-              <img src="thumb4.jpg" data-full="full4.jpg" />
-              <img src="thumb5.jpg" data-full="full5.jpg" />
-              <img src="thumb6.jpg" data-full="full6.jpg" />
-            </div>
-          </div>
+<td class="image-cell">
+  <img src="index.jpg" alt="DJ Joshua Reid" class="main-image">
+</td>
 
-          <a href="https://hearthis.at/joshuareid" target="_blank">DJ Mixes</a>
-          <a href="mailto:joshuarcameron@gmail.com">Contact</a>
-        </nav>
-      </td>
-    </tr>
-  </table>
+<td class="nav-cell">
+  <img src="newlogo.png" alt="Logo" class="logo">
 
-  <script>
-    const bioLink = document.getElementById('bio-link');
-    const bioContent = document.getElementById('bio-content');
-    const bioUnderPhoto = document.getElementById('bio-under-photo');
+  <nav>
 
-    const galleryLink = document.getElementById('gallery-link');
-    const galleryContent = document.getElementById('gallery-content');
-    const galleryUnderPhoto = document.getElementById('gallery-under-photo');
+    <a data-target="bio">Biography</a>
+    <div id="bio" class="section hidden">
+      DJ Joshua Reid is a seasoned force behind the decks, with roots that trace back to high school and a career spanning more than 20 years. Known for high-energy sets and a deep love of disco-infused house, he has shared stages with international heavyweights such as The Cube Guys, Hector Fonseca, and Morabito, while performing at iconic events including Toronto Pride and Halifax Pride. After a recent relocation from Toronto to Halifax, Joshua Reid has quickly made his mark on the East Coast, becoming a defining sound of the local bear scene. He now regularly commands the dance floor at the Bear Ball, bringing fun, flair, and undeniable groove to every set he plays.
+    </div>
 
-    function isMobile() {
-      return window.matchMedia('(max-width: 900px)').matches;
-    }
+    <a data-target="upcoming">Upcoming</a>
+    <div id="upcoming" class="section hidden">
+      <div class="thumb-grid">
+        <img src="thumb1.jpg" data-full="full1.jpg">
+        <img src="thumb2.jpg" data-full="full2.jpg">
+        <img src="thumb3.jpg" data-full="full3.jpg">
+        <img src="thumb4.jpg" data-full="full4.jpg">
+        <img src="thumb5.jpg" data-full="full5.jpg">
+      </div>
+    </div>
 
-    function syncContent(source, target) {
-      if (!source || !target) return;
-      target.innerHTML = source.innerHTML;
-      attachLightbox(target);
-    }
+    <a data-target="past">Past Events</a>
+    <div id="past" class="section hidden">
+      <div class="thumb-grid">
+        <img src="past1-thumb.jpg" data-full="past1.jpg">
+        <img src="past2-thumb.jpg" data-full="past2.jpg">
+        <img src="past3-thumb.jpg" data-full="past3.jpg">
+        <img src="past4-thumb.jpg" data-full="past4.jpg">
+        <img src="past5-thumb.jpg" data-full="past5.jpg">
+      </div>
+    </div>
 
-    function attachLightbox(container) {
-      const images = container.querySelectorAll('img[data-full]');
-      images.forEach(img => {
-        img.onclick = () => openLightbox(img.dataset.full);
-      });
-    }
+    <a href="https://hearthis.at/joshuareid" target="_blank">DJ Mixes</a>
+    <a href="mailto:joshuareidlive@gmail.com">Contact</a>
 
-    function openLightbox(src) {
-      const lightbox = document.createElement('div');
-      lightbox.className = 'lightbox';
-      lightbox.innerHTML = `<img src="${src}">`;
-      lightbox.onclick = () => lightbox.remove();
-      document.body.appendChild(lightbox);
-    }
+  </nav>
+</td>
 
-    attachLightbox(galleryContent);
+</tr>
+</table>
 
-    bioLink.onclick = () => {
-      if (isMobile()) {
-        syncContent(bioContent, bioUnderPhoto);
-        bioUnderPhoto.classList.toggle('hidden');
-      } else {
-        bioContent.classList.toggle('hidden');
-      }
-    };
+<script>
 
-    galleryLink.onclick = () => {
-      if (isMobile()) {
-        syncContent(galleryContent, galleryUnderPhoto);
-        galleryUnderPhoto.classList.toggle('hidden');
-      } else {
-        galleryContent.classList.toggle('hidden');
-      }
-    };
-  </script>
+const links = document.querySelectorAll('nav a[data-target]');
+
+links.forEach(link => {
+  link.addEventListener('click', () => {
+    const targetId = link.getAttribute('data-target');
+    const section = document.getElementById(targetId);
+    section.classList.toggle('hidden');
+  });
+});
+
+function openLightbox(src) {
+  const lightbox = document.createElement('div');
+  lightbox.className = 'lightbox';
+  lightbox.innerHTML = `<img src="${src}">`;
+  lightbox.onclick = () => lightbox.remove();
+  document.body.appendChild(lightbox);
+}
+
+function attachLightbox() {
+  const thumbs = document.querySelectorAll('img[data-full]');
+  thumbs.forEach(img => {
+    img.addEventListener('click', () => {
+      openLightbox(img.dataset.full);
+    });
+  });
+}
+
+attachLightbox();
+
+</script>
+
 </body>
 </html>
